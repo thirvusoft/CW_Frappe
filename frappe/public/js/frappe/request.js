@@ -543,6 +543,10 @@ frappe.request.report_error = function(xhr, request_opts) {
 	}
 
 	if (exc) {
+		var log = frappe.model.get_new_doc('Error Log')
+		log.method = 'Server Error'
+		log.error = exc
+		log.save()
 		var error_report_email = frappe.boot.error_report_email;
 
 		request_opts = frappe.request.cleanup_request_opts(request_opts);

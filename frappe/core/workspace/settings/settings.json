@@ -10,6 +10,7 @@
  "hide_custom": 0,
  "icon": "setting",
  "idx": 0,
+ "is_default": 0,
  "is_standard": 1,
  "label": "Settings",
  "links": [
@@ -336,7 +337,7 @@
    "type": "Link"
   }
  ],
- "modified": "2020-12-01 13:38:40.235323",
+ "modified": "2023-01-25 14:38:25.086162",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "Settings",

@@ -33,7 +33,8 @@ class Weekday(Enum):
 	Friday = 5
 	Saturday = 6
 
-
+def str_to_obj(s):
+    return eval(s)
 def get_first_day_of_the_week():
 	return frappe.get_system_settings("first_day_of_the_week") or "Sunday"
 

@@ -3,7 +3,7 @@
  "charts": [],
  "creation": "2020-03-02 15:15:03.839594",
  "developer_mode_only": 0,
- "disable_user_customization": 0,
+ "disable_user_customization": 1,
  "docstatus": 0,
  "doctype": "Workspace",
  "extends_another_page": 0,
@@ -116,7 +116,7 @@
    "type": "Link"
   }
  ],
- "modified": "2021-02-04 13:50:35.750463",
+ "modified": "2023-01-25 14:38:24.980397",
  "modified_by": "Administrator",
  "module": "Custom",
  "name": "Customization",

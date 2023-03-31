@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_rename": 1,
  "autoname": "field:module_profile_name",
  "creation": "2020-12-22 22:00:30.614475",
  "doctype": "DocType",
@@ -35,7 +36,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-01-03 15:36:52.622696",
+ "modified": "2023-01-25 15:04:19.159267",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "Module Profile",

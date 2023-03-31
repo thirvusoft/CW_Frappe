@@ -20,17 +20,18 @@ from frappe.utils import cint, cstr, has_gravatar
 class Contact(Document):
 	def autoname(self):
 		# concat first and last name
+		set_link_title(self)
 		self.name = " ".join(
-			filter(None, [cstr(self.get(f)).strip() for f in ["first_name", "last_name"]])
+			filter(None, [cstr(self.get(f)).strip() for f in ["first_name"]])
 		)
 
 		if frappe.db.exists("Contact", self.name):
 			self.name = append_number_if_name_exists("Contact", self.name)
 
 		# concat party name if reqd
-		for link in self.links:
-			self.name = self.name + "-" + link.link_name.strip()
-			break
+		# for link in self.links:
+		# 	self.name = self.name + "-" + link.link_title.strip()
+		# 	break
 
 	def validate(self):
 		self.set_primary_email()

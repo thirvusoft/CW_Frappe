@@ -1111,23 +1111,24 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 
 	setup_filterable() {
 		// filterable events
-		this.$result.on("click", ".filterable", (e) => {
-			if (e.metaKey || e.ctrlKey) return;
-			e.stopPropagation();
-			const $this = $(e.currentTarget);
-			const filters = $this.attr("data-filter").split("|");
-			const filters_to_apply = filters.map((f) => {
-				f = f.split(",");
-				if (f[2] === "Today") {
-					f[2] = frappe.datetime.get_today();
-				} else if (f[2] == "User") {
-					f[2] = frappe.session.user;
-				}
-				this.filter_area.remove(f[0]);
-				return [this.doctype, f[0], f[1], f.slice(2).join(",")];
-			});
-			this.filter_area.add(filters_to_apply);
-		});
+
+		// this.$result.on("click", ".filterable", (e) => {
+		// 	if (e.metaKey || e.ctrlKey) return;
+		// 	e.stopPropagation();
+		// 	const $this = $(e.currentTarget);
+		// 	const filters = $this.attr("data-filter").split("|");
+		// 	const filters_to_apply = filters.map((f) => {
+		// 		f = f.split(",");
+		// 		if (f[2] === "Today") {
+		// 			f[2] = frappe.datetime.get_today();
+		// 		} else if (f[2] == "User") {
+		// 			f[2] = frappe.session.user;
+		// 		}
+		// 		this.filter_area.remove(f[0]);
+		// 		return [this.doctype, f[0], f[1], f.slice(2).join(",")];
+		// 	});
+		// 	this.filter_area.add(filters_to_apply);
+		// });
 	}
 
 	setup_list_click() {
@@ -1144,7 +1145,7 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 			}
 			// don't open form when checkbox, like, filterable are clicked
 			if (
-				$target.hasClass("filterable") ||
+				// $target.hasClass("filterable") ||
 				$target.hasClass("select-like") ||
 				$target.hasClass("file-select") ||
 				$target.hasClass("list-row-like") ||

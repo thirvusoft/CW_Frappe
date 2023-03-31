@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_rename": 1,
  "autoname": "field:label",
  "beta": 1,
  "creation": "2020-01-23 13:45:59.470592",
@@ -218,7 +219,7 @@
   }
  ],
  "links": [],
- "modified": "2023-01-08 18:46:00.751741",
+ "modified": "2023-03-18 15:22:47.192866",
  "modified_by": "Administrator",
  "module": "Desk",
  "name": "Workspace",

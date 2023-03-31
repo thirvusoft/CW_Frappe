@@ -25,9 +25,10 @@ class Address(Document):
 		self.flags.linked = False
 
 	def autoname(self):
+		set_link_title(self)
 		if not self.address_title:
 			if self.links:
-				self.address_title = self.links[0].link_name
+				self.address_title = self.links[0].link_title
 
 		if self.address_title:
 			self.name = cstr(self.address_title).strip() + "-" + cstr(_(self.address_type)).strip()

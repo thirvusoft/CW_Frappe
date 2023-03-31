@@ -1,15 +1,20 @@
 {
  "actions": [],
  "allow_import": 1,
- "allow_rename": 1,
  "creation": "2014-03-11 14:55:00",
  "description": "Represents a User in the system.",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "enabled",
+  "change_password",
+  "new_password",
+  "reset_password_key",
+  "logout_all_sessions",
+  "last_password_reset_date",
   "section_break_3",
   "email",
+  "company",
   "first_name",
   "middle_name",
   "last_name",
@@ -39,11 +44,6 @@
   "mute_sounds",
   "column_break_22",
   "mobile_no",
-  "change_password",
-  "new_password",
-  "logout_all_sessions",
-  "reset_password_key",
-  "last_password_reset_date",
   "redirect_url",
   "document_follow_notifications_section",
   "document_follow_notify",
@@ -114,6 +114,7 @@
    "label": "First Name",
    "oldfieldname": "first_name",
    "oldfieldtype": "Data",
+   "permlevel": 1,
    "reqd": 1
   },
   {
@@ -121,7 +122,8 @@
    "fieldtype": "Data",
    "label": "Middle Name",
    "oldfieldname": "middle_name",
-   "oldfieldtype": "Data"
+   "oldfieldtype": "Data",
+   "permlevel": 1
   },
   {
    "bold": 1,
@@ -129,7 +131,8 @@
    "fieldtype": "Data",
    "label": "Last Name",
    "oldfieldname": "last_name",
-   "oldfieldtype": "Data"
+   "oldfieldtype": "Data",
+   "permlevel": 1
   },
   {
    "fieldname": "full_name",
@@ -168,6 +171,7 @@
    "in_global_search": 1,
    "in_standard_filter": 1,
    "label": "Username",
+   "permlevel": 1,
    "unique": 1
   },
   {
@@ -179,7 +183,8 @@
   {
    "fieldname": "time_zone",
    "fieldtype": "Select",
-   "label": "Time Zone"
+   "label": "Time Zone",
+   "permlevel": 1
   },
   {
    "description": "Get your globally recognized avatar from Gravatar.com",
@@ -290,7 +295,6 @@
    "label": "Mute Sounds"
   },
   {
-   "collapsible": 1,
    "depends_on": "eval:doc.enabled && (!doc.__islocal || !cint(doc.send_welcome_email))",
    "fieldname": "change_password",
    "fieldtype": "Section Break",
@@ -336,7 +340,8 @@
    "collapsible": 1,
    "fieldname": "document_follow_notifications_section",
    "fieldtype": "Section Break",
-   "label": "Document Follow"
+   "label": "Document Follow",
+   "permlevel": 1
   },
   {
    "default": "0",
@@ -357,7 +362,8 @@
    "depends_on": "enabled",
    "fieldname": "email_settings",
    "fieldtype": "Section Break",
-   "label": "Email"
+   "label": "Email",
+   "permlevel": 1
   },
   {
    "default": "1",
@@ -461,7 +467,6 @@
    "fieldname": "user_type",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "in_standard_filter": 1,
    "label": "User Type",
    "oldfieldname": "user_type",
    "oldfieldtype": "Select",
@@ -606,69 +611,23 @@
    "fieldtype": "Link",
    "label": "Module Profile",
    "options": "Module Profile"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "icon": "fa fa-user",
  "idx": 413,
  "image_field": "user_image",
- "links": [
-  {
-   "group": "Profile",
-   "link_doctype": "Contact",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Profile",
-   "link_doctype": "Blogger",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Logs",
-   "link_doctype": "Access Log",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Logs",
-   "link_doctype": "Activity Log",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Logs",
-   "link_doctype": "Energy Point Log",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Logs",
-   "link_doctype": "Route History",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Settings",
-   "link_doctype": "User Permission",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Settings",
-   "link_doctype": "Document Follow",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Activity",
-   "link_doctype": "Communication",
-   "link_fieldname": "user"
-  },
-  {
-   "group": "Activity",
-   "link_doctype": "ToDo",
-   "link_fieldname": "owner"
-  },
-  {
-   "group": "Integrations",
-   "link_doctype": "Token Cache",
-   "link_fieldname": "user"
-  }
- ],
- "modified": "2022-09-19 16:10:56.745069",
+ "links": [],
+ "modified": "2023-03-28 13:24:57.037174",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",
@@ -701,7 +660,6 @@
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
  "title_field": "full_name",
  "track_changes": 1
 }

@@ -4,7 +4,7 @@
  "charts": [],
  "creation": "2021-01-02 10:51:16.579957",
  "developer_mode_only": 0,
- "disable_user_customization": 0,
+ "disable_user_customization": 1,
  "docstatus": 0,
  "doctype": "Workspace",
  "extends_another_page": 0,
@@ -182,7 +182,7 @@
    "type": "Link"
   }
  ],
- "modified": "2021-02-04 13:48:48.493146",
+ "modified": "2023-01-25 14:38:25.032522",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "Build",
