@@ -1,6 +1,6 @@
 {% extends "templates/web.html" %}
 
-{%- block title -%}{{_("Not Found")}}{%- endblock -%}
+{%- block title -%}{{_("Welcome")}}{%- endblock -%}
 
 {% block page_content %}
 
@@ -8,17 +8,56 @@
 	window.is_404 = true;
 </script>
 
-<div class="error-page">
-	<img class="img-404" src="/assets/frappe/images/ui-states/404.png" />
-	<div>
-		<h2 class="mb-1 mt-4">
-			{{ _("There's nothing here") }}
-		</h2>
-		<div class="text-muted error-text">
-			{{ _("The page you are looking for has gone missing.") }}
-		</div>
-		<div class="mt-6 back-to-home"><a href='/' class='btn btn-primary'>{{ _("Back to Home") }}</a></div>
-	</div>
-</div>
+ <!--Carousel Wrapper-->
+ <div id="carousel-example-1z" class="carousel slide carousel-fade z-depth-1-half" data-ride="carousel">
+    <!--Indicators-->
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-example-1z" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-example-1z" data-slide-to="1"></li>
+      <li data-target="#carousel-example-1z" data-slide-to="2"></li>
+    </ol>
+    <!--/.Indicators-->
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+      <!--First slide-->
+      <div class="carousel-item active">
+        <center><img  src="/files/cycle2.jpg" height=900px width=95%></center>
+      </div>
+      <!--/First slide-->
+      <!--Second slide-->
+      <div class="carousel-item">
+        <center><img src="/files/cycle1.jpg" height=900px width=95%></center>
+      </div>
+      <!--/Second slide-->
+      <!--Third slide-->
+      <div class="carousel-item">
+       <center> <img src="/files/cycle3.jpg" height=900px width=95%></center>
+      </div>
+      <!--/Third slide-->
+    </div>
+    <!--/.Slides-->
+    <!--Controls-->
+    <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    <!--/.Controls-->
+  </div>
+  <!--/.Carousel Wrapper-->
+  <br><br>
+  <h2 style="text-align: center;">
+  <strong>We Provide  <span style="color: #800000;">“The best quality”</span><br>
+<span style="color: #031C6E;">“Cycles and Accessories”</span><br>
+</strong>
+  </h2>
+  
+  <div style="padding: 50px">
+  <left> <h3 style="text-indent: 10px;"> About US </h3> 
+<p style="text-indent: 40px;">
+</p></center>
 
 {% endblock %}

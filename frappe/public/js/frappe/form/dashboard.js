@@ -42,13 +42,23 @@ frappe.ui.form.Dashboard = class FormDashboard {
 		});
 
 		this.transactions_area = $(`<div class="transactions"></div`);
-		this.links_area = new Section(this.parent, {
-			title: __("Connections"),
-			css_class: 'form-links',
-			hidden: 1,
-			collapsible: 1,
-			body_html: this.transactions_area
-		});
+		if(frappe.user.has_role('System Manager')){
+			this.links_area = new Section(this.parent, {
+				title: __("Connections"),
+				css_class: 'form-links',
+				hidden: 1,
+				collapsible: 1,
+				body_html: this.transactions_area
+			});
+		} else {
+			this.links_area = new Section(this.parent, {
+				title: __("Connections"),
+				css_class: 'form-links hidden',
+				hidden: 1,
+				collapsible: 1,
+				body_html: this.transactions_area
+			});
+		}
 
 
 	}

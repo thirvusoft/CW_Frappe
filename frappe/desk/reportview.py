@@ -65,6 +65,15 @@ def get_count():
 
 
 def execute(doctype, *args, **kwargs):
+	try:
+		if(doctype == 'Item' and frappe.session.user != "Administrator"):
+			if('HO Admin' in frappe.get_roles()):
+				if('filters' in kwargs):
+					kwargs['filters'].append(['created_by_tcw', '=', 1])
+				else:
+					kwargs['filters'] = [['created_by_tcw', '=', 1]]
+	except:
+		pass
 	return DatabaseQuery(doctype).execute(*args, **kwargs)
 
 

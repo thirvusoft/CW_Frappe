@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_import": 1,
+ "allow_rename": 1,
  "creation": "2014-03-11 14:55:00",
  "description": "Represents a User in the system.",
  "doctype": "DocType",
@@ -114,7 +115,7 @@
    "label": "First Name",
    "oldfieldname": "first_name",
    "oldfieldtype": "Data",
-   "permlevel": 1,
+   "read_only_depends_on": "eval:!frappe.user.has_role('Thirvu Admin')",
    "reqd": 1
   },
   {
@@ -248,6 +249,7 @@
    "options": "Phone"
   },
   {
+   "description": "WhatsApp number for sending Daily Summary ",
    "fieldname": "mobile_no",
    "fieldtype": "Data",
    "label": "Mobile No",
@@ -627,7 +629,7 @@
  "idx": 413,
  "image_field": "user_image",
  "links": [],
- "modified": "2023-03-28 13:24:57.037174",
+ "modified": "2023-04-21 19:42:30.226079",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",

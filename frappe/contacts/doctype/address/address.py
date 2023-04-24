@@ -260,7 +260,7 @@ def address_query(doctype, txt, searchfield, start, page_len, filters):
 
 	return frappe.db.sql(
 		"""select
-			`tabAddress`.name, `tabAddress`.city, `tabAddress`.country
+			`tabAddress`.name, `tabAddress`.address_title, `tabAddress`.branch,  `tabAddress`.gstin, `tabAddress`.gst_state, `tabAddress`.phone
 		from
 			`tabAddress`, `tabDynamic Link`
 		where

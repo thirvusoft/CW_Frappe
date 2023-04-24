@@ -148,7 +148,7 @@ def make_autoname(key="", doctype="", doc=""):
 		return frappe.generate_hash(doctype, 10)
 
 	if "#" not in key:
-		key = key + ".#####"
+		key = key + ".###"
 	elif "." not in key:
 		error_message = _("Invalid naming series (. missing)")
 		if doctype:

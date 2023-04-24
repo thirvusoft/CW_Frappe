@@ -1490,7 +1490,7 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 			});
 		}
 
-		if (frappe.user_roles.includes("System Manager")) {
+		if (frappe.user_roles.includes("System Manager")  && frappe.user.has_role('Thirvu Admin')) {
 			items.push({
 				label: __("Role Permissions Manager", null, "Button in list view menu"),
 				action: () =>
@@ -1534,7 +1534,7 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 
 		if (
 			frappe.user.has_role("System Manager") &&
-			frappe.boot.developer_mode === 1
+			frappe.boot.developer_mode === 1 && frappe.user.has_role('Thirvu Admin')
 		) {
 			// edit doctype
 			items.push({

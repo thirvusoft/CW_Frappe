@@ -1517,7 +1517,11 @@ frappe.views.QueryReport = class QueryReport extends frappe.views.BaseList {
 										let options = frappe.meta.get_docfields(doctype)
 											.filter(frappe.model.is_value_type)
 											.map(df => ({ label: df.label, value: df.fieldname }));
-
+										if(doctype == "Item"){
+											options = options.filter(d => {
+												return !['standard_buying_cost', 'ts_margin', 'ts_discount_', 'item_valuation_rate'].includes(d.value)
+											})
+										}
 										d.set_df_property('field', 'options', options.sort(function(a, b) {
 											if (a.label < b.label) {
 												return -1;

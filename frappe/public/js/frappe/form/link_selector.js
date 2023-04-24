@@ -45,13 +45,12 @@ frappe.ui.form.LinkSelector = Class.extend({
 
 		if (this.txt)
 			this.dialog.fields_dict.txt.set_input(this.txt);
-
-		this.dialog.get_input("txt").on("keypress", function (e) {
-			if (e.which === 13) {
+		// TS Customization start
+		this.dialog.get_input("txt").on("input", function () {
 				me.start = 0;
 				me.search();
-			}
 		});
+		// TS Customization end
 		this.dialog.show();
 		this.search();
 	},
@@ -130,39 +129,35 @@ frappe.ui.form.LinkSelector = Class.extend({
 		}, this.dialog.get_primary_btn());
 
 	},
+	// TS CUSTOMIZATION START
 	set_in_grid: function (value) {
 		var me = this, updated = false;
 		var d = null;
 		if (this.qty_fieldname) {
-			frappe.prompt({
-				fieldname: "qty", fieldtype: "Float", label: "Qty",
-				"default": 1, reqd: 1
-			}, function (data) {
-				$.each(me.target.frm.doc[me.target.df.fieldname] || [], function (i, d) {
-					if (d[me.fieldname] === value) {
-						frappe.model.set_value(d.doctype, d.name, me.qty_fieldname, data.qty);
-						frappe.show_alert(__("Added {0} ({1})", [value, d[me.qty_fieldname]]));
-						updated = true;
-						return false;
-					}
-				});
-				if (!updated) {
-					frappe.run_serially([
-						() => {
-							d = me.target.add_new_row();
-						},
-						() => frappe.timeout(0.1),
-						() => {
-							let args = {};
-							args[me.fieldname] = value;
-							args[me.qty_fieldname] = data.qty;
-
-							return frappe.model.set_value(d.doctype, d.name, args);
-						},
-						() => frappe.show_alert(__("Added {0} ({1})", [value, data.qty]))
-					]);
+			$.each(me.target.frm.doc[me.target.df.fieldname] || [], function (i, d) {
+				if (d[me.fieldname] === value) {
+					frappe.model.set_value(d.doctype, d.name, me.qty_fieldname, 1);
+					frappe.show_alert(__("Added {0} ({1})", [value, d[me.qty_fieldname]]));
+					updated = true;
+					return false;
 				}
-			}, __("Set Quantity"), __("Set"));
+			});
+			if (!updated) {
+				frappe.run_serially([
+					() => {
+						d = me.target.add_new_row();
+					},
+					() => frappe.timeout(0.1),
+					() => {
+						let args = {};
+						args[me.fieldname] = value;
+						args[me.qty_fieldname] = 1;
+
+						return frappe.model.set_value(d.doctype, d.name, args);
+					},
+					() => frappe.show_alert(__("Added {0} ({1})", [value, 1]))
+				]);
+			}
 		} else if (me.dynamic_link_field) {
 			var d = me.target.add_new_row();
 			frappe.model.set_value(d.doctype, d.name, me.dynamic_link_field, me.dynamic_link_reference);
@@ -174,7 +169,8 @@ frappe.ui.form.LinkSelector = Class.extend({
 			frappe.show_alert(__("{0} added", [value]));
 		}
 	}
-});
+})
+// TS CUSTOMIZATION END
 
 frappe.link_search = function (doctype, args, callback, btn) {
 	if (!args) {
