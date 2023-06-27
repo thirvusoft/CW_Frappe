@@ -545,8 +545,26 @@ frappe.request.report_error = function(xhr, request_opts) {
 	if (exc) {
 		var log = frappe.model.get_new_doc('Error Log')
 		log.method = 'Server Error'
-		log.error = exc
-		log.save()
+		log.error = [
+			'<h5>Please type some additional information that could help us reproduce this issue:</h5>',
+			'<div style="min-height: 100px; border: 1px solid #bbb; \
+				border-radius: 5px; padding: 15px; margin-bottom: 15px;"></div>',
+			'<hr>',
+			'<h5>App Versions</h5>',
+			'<pre>' + JSON.stringify(frappe.boot.versions, null, "\t") + '</pre>',
+			'<h5>Route</h5>',
+			'<pre>' + frappe.get_route_str() + '</pre>',
+			'<hr>',
+			'<h5>Error Report</h5>',
+			'<pre>' + exc + '</pre>',
+			'<hr>',
+			'<h5>Request Data</h5>',
+			'<pre>' + JSON.stringify(request_opts, null, "\t") + '</pre>',
+			'<hr>',
+			'<h5>Response JSON</h5>',
+			'<pre>' + JSON.stringify(data, null, '\t')+ '</pre>'
+		].join("\n");
+		frappe.call({method:"frappe.client.save", args:{doc:log}}) 
 		var error_report_email = frappe.boot.error_report_email;
 
 		request_opts = frappe.request.cleanup_request_opts(request_opts);

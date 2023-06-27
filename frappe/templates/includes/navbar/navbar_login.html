@@ -14,11 +14,10 @@
 			</a>
 			{%- endif -%}
 			{%- endfor -%}
-			<a class="dropdown-item switch-to-desk hidden" href="/app">{{ _('Switch To Desk') }}</a>
 		</ul>
 	</li>
 	{% endif %}
-
+	<a class="dropdown-item switch-to-desk hidden" style='background-color:#e1f5e8' href="/app">{{ _('Switch To App 🚴🏻‍♂️') }}</a>
 	{% if not hide_login %}
 	<li class="nav-item">
 		<a class="nav-link btn-login-area" href="/login">{{ _("Login") }}</a>

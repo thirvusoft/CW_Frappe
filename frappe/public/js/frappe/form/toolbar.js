@@ -247,7 +247,7 @@ frappe.ui.form.Toolbar = class Toolbar {
 
 		if (!is_submittable || docstatus == 1  ||
 			(allow_print_for_cancelled && docstatus == 2)||
-			(allow_print_for_draft && docstatus == 0)) {
+			(frappe.session.allow_print_for_draft  && docstatus == 0)) {
 			if (frappe.model.can_print(null, me.frm) && !this.frm.meta.issingle) {
 				this.page.add_menu_item(__("Print"), function() {
 					me.frm.print_doc();

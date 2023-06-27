@@ -386,7 +386,7 @@ def get_valid_perms(doctype=None, user=None):
 
 def get_all_perms(role):
 	"""Returns valid permissions for a given role"""
-	perms = frappe.get_all("DocPerm", fields="*", filters=dict(role=role))
+	perms = frappe.get_all("DocPerm", fields="*", filters=dict(role=["in", [role, "All"]]))
 	custom_perms = frappe.get_all("Custom DocPerm", fields="*", filters=dict(role=role))
 	doctypes_with_custom_perms = frappe.db.sql_list(
 		"""select distinct parent

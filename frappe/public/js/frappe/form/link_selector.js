@@ -134,14 +134,14 @@ frappe.ui.form.LinkSelector = Class.extend({
 		var me = this, updated = false;
 		var d = null;
 		if (this.qty_fieldname) {
-			$.each(me.target.frm.doc[me.target.df.fieldname] || [], function (i, d) {
-				if (d[me.fieldname] === value) {
-					frappe.model.set_value(d.doctype, d.name, me.qty_fieldname, 1);
-					frappe.show_alert(__("Added {0} ({1})", [value, d[me.qty_fieldname]]));
-					updated = true;
-					return false;
-				}
-			});
+			// $.each(me.target.frm.doc[me.target.df.fieldname] || [], function (i, d) {
+			// 	if (d[me.fieldname] === value) {
+			// 		frappe.model.set_value(d.doctype, d.name, me.qty_fieldname, 1);
+			// 		frappe.show_alert(__("Added {0} ({1})", [value, d[me.qty_fieldname]]));
+			// 		updated = true;
+			// 		return false;
+			// 	}
+			// });
 			if (!updated) {
 				frappe.run_serially([
 					() => {

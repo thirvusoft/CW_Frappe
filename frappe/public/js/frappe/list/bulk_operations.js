@@ -13,7 +13,7 @@ export default class BulkOperations {
 		const valid_docs = docs.filter(doc => {
 			return !is_submittable || doc.docstatus === 1 ||
 				(allow_print_for_cancelled && doc.docstatus == 2) ||
-				(allow_print_for_draft && doc.docstatus == 0) ||
+				(frappe.session.allow_print_for_draft  && doc.docstatus == 0) ||
 				frappe.user.has_role('Administrator');
 		}).map(doc => doc.name);
 

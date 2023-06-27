@@ -12,6 +12,7 @@ import frappe
 from frappe import _
 from frappe.model import log_types
 from frappe.utils import cint, cstr, now_datetime
+from datetime import datetime as dtt
 
 # Types that can be using in naming series fields
 NAMING_SERIES_PART_TYPES = (
@@ -167,6 +168,24 @@ def parse_naming_series(parts, doctype="", doc=""):
 		parts = parts.split(".")
 	series_set = False
 	today = now_datetime()
+	month = today.strftime("%B")
+	if(doc):
+		if(doc.get('bill_date') or doc.get('posting_date') or doc.get('transaction_date')):
+			date = doc.get('bill_date') or doc.get('posting_date') or doc.get('transaction_date')
+			if(type(date) != datetime.date):
+				try:
+					month = dtt.strptime(date, "%Y-%m-%d").strftime("%B")
+				except:
+					try:
+						month = dtt.strptime(date, "%Y-%m-%d %H:%M:%S").strftime("%B")
+					except:
+						pass
+			else:
+				try:
+					month = date.strftime("%B")
+				except:
+					pass
+
 	for e in parts:
 		if not e:
 			continue
@@ -197,7 +216,7 @@ def parse_naming_series(parts, doctype="", doc=""):
 		elif e.startswith("M") and list(e).count('M') == 1 and (e[1::] or '').isnumeric():
 			length = e[1::] or ''
 			if(length.isnumeric()):
-				part = today.strftime("%B")[:int(length):].upper()
+				part = month[:int(length):].upper()
 		elif doc and doc.get(e):
 			part = doc.get(e)
 		else:

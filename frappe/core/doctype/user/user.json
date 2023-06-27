@@ -253,8 +253,7 @@
    "fieldname": "mobile_no",
    "fieldtype": "Data",
    "label": "Mobile No",
-   "options": "Phone",
-   "unique": 1
+   "options": "Phone"
   },
   {
    "fieldname": "birth_date",
@@ -629,7 +628,7 @@
  "idx": 413,
  "image_field": "user_image",
  "links": [],
- "modified": "2023-04-21 19:42:30.226079",
+ "modified": "2023-05-15 11:03:55.631508",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "User",

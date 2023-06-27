@@ -17,7 +17,7 @@ from frappe.core.doctype.document_share_key.document_share_key import is_expired
 from frappe.modules import get_doc_path
 from frappe.utils import cint, sanitize_html, strip_html
 from frappe.utils.jinja import is_rtl
-
+import cycle_world
 no_cache = 1
 
 base_template_path = "templates/www/printview.html"
@@ -129,9 +129,8 @@ def get_rendered_template(
 
 	if not frappe.flags.ignore_print_permissions:
 		validate_print_permission(doc)
-
 	if doc.meta.is_submittable:
-		if doc.docstatus == 0 and not cint(print_settings.allow_print_for_draft):
+		if doc.docstatus == 0 and not cint(cycle_world.allow_print_for_draft()):
 			frappe.throw(_("Not allowed to print draft documents"), frappe.PermissionError)
 
 		if doc.docstatus == 2 and not cint(print_settings.allow_print_for_cancelled):
