@@ -1708,15 +1708,61 @@ frappe.views.ListView = class ListView extends frappe.views.BaseList {
 				action: () => {
 					const docnames = this.get_checked_items(true);
 					if (docnames.length > 0) {
-						frappe.confirm(
-							__("Cancel {0} documents?", [docnames.length], "Title of confirmation dialog"),
-							() =>
-								bulk_operations.submit_or_cancel(
-									docnames,
-									"cancel",
-									this.refresh
-								)
-						);
+						var me = this;
+						var d=new frappe.ui.Dialog({
+							title:"Confirm",
+							  fields:[
+								{"fieldname":"text", "fieldtype":"Small Text", "default":__("Cancel {0} documents?", [docnames.length], "Title of confirmation dialog"),"read_only":1},
+						   		{"fieldname":"reason", "fieldtype":"Small Text","label":"Reason for Cancelling", "reqd":1},
+							],
+							primary_action_label:"Yes",
+							secondary_action_label:"No",
+							secondary_action(){
+								d.hide()
+							},
+							primary_action(data){
+								var cmt = frappe.model.get_new_doc("Comment")
+								docnames.forEach((doc, i)=>{
+									cmt.comment_type="Comment";
+									cmt.reference_doctype = me.doctype;
+									cmt.reference_name = doc;
+									cmt.content = `<p>Reason for Cancel:</p>${data.reason}`;
+									frappe.call({
+										method:"frappe.client.save", 
+										args:{doc:cmt},
+										callback(){
+											if(i== docnames.length-1){
+												bulk_operations.submit_or_cancel(
+													docnames,
+													"cancel",
+													me.refresh
+												)
+												d.hide()
+											}
+											
+										}
+									}) 
+								})
+								
+							}
+						  })
+						  d.show()
+						$(d.wrapper[0].querySelector("div[data-fieldname='text']")).find(".clearfix").hide()
+						$(d.wrapper[0].querySelector("div[data-fieldname='text']")).find(".like-disabled-input")[0].style.background="none" 
+						$(d.wrapper[0].querySelector("div[data-fieldname='text']")).find(".like-disabled-input")[0].style.padding=0
+						$(d.wrapper[0].querySelector("div[data-fieldname='text']")).find(".like-disabled-input")[0].style.color="black"
+						$(d.wrapper[0].querySelector("div[data-fieldname='text']")).find(".like-disabled-input")[0].style.fontSize="15px"
+
+
+						// frappe.confirm(
+						// 	__("Cancel {0} documents?", [docnames.length], "Title of confirmation dialog"),
+						// 	() =>
+						// 		bulk_operations.submit_or_cancel(
+						// 			docnames,
+						// 			"cancel",
+						// 			this.refresh
+						// 		)
+						// );
 					}
 				},
 				standard: true,

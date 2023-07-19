@@ -1,6 +1,8 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # MIT License. See license.txt
 
+#frappe/frappe/boot.py
+
 from __future__ import unicode_literals
 
 from six import iteritems, text_type
@@ -107,7 +109,7 @@ def get_letter_heads():
 	letter_heads = {}
 	for letter_head in frappe.get_all("Letter Head", fields=["name", "content", "footer"]):
 		letter_heads.setdefault(
-			letter_head.name, {"header": letter_head.content, "footer": letter_head.footer}
+			letter_head.name, {"header": frappe.render_template(letter_head.content,{}), "footer": letter_head.footer} #core code
 		)
 
 	return letter_heads

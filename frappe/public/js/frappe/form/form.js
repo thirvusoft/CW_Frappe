@@ -777,7 +777,17 @@ frappe.ui.form.Form = class FrappeForm {
 		const doctypes = Array.from(new Set(links.map(link => link.doctype)));
 
 		me.ignore_doctypes_on_cancel_all = me.ignore_doctypes_on_cancel_all || [];
-
+		let docs_to_comment_reason = [{doctype:me.doctype, name:me.docname}]
+		for (let doctype of doctypes) {
+			if (!me.ignore_doctypes_on_cancel_all.includes(doctype)) {
+				let docnames = links
+					.filter((link) => link.doctype == doctype)
+					.map((link)=>{
+						return {"doctype":link.doctype, "name":link.name}
+						})
+				docs_to_comment_reason = [...docs_to_comment_reason, ...docnames]
+			}
+		}
 		for (let doctype of doctypes) {
 			if (!me.ignore_doctypes_on_cancel_all.includes(doctype)) {
 				let docnames = links
@@ -802,30 +812,48 @@ frappe.ui.form.Form = class FrappeForm {
 		// generate dialog box to cancel all linked docs
 		let d = new frappe.ui.Dialog({
 			title: __("Cancel All Documents"),
-			fields: [{
+			fields: [
+				{
 				fieldtype: "HTML",
 				options: `<p class="frappe-confirm-message">${confirm_message}</p>`
-			}]
+				},
+				{"fieldname":"reason", "fieldtype":"Small Text","label":"Reason for Cancelling", "reqd":1},
+			]
 		}, () => me.handle_save_fail(btn, on_error));
 
 		// if user can cancel all linked docs, add action to the dialog
 		if (can_cancel) {
-			d.set_primary_action("Cancel All", () => {
-				d.hide();
-				frappe.call({
-					method: "frappe.desk.form.linked_with.cancel_all_linked_docs",
-					args: {
-						docs: links,
-						ignore_doctypes_on_cancel_all: me.ignore_doctypes_on_cancel_all || []
-					},
-					freeze: true,
-					callback: (resp) => {
-						if (!resp.exc) {
-							me.reload_doc();
-							me._cancel(btn, callback, on_error, true);
+			d.set_primary_action("Cancel All", (data) => {
+				var cmt = frappe.model.get_new_doc("Comment")
+				docs_to_comment_reason.forEach((doc, i) => {
+					cmt.comment_type="Comment";
+					cmt.reference_doctype = doc.doctype;
+					cmt.reference_name = doc.name;
+					cmt.content = `<p>Reason for Cancel:</p>${data.reason}`;
+					frappe.call({
+						method:"frappe.client.save",
+						args:{doc:cmt},
+						callback(){
+							if(i == docs_to_comment_reason.length - 1){
+							d.hide()
+							frappe.call({
+								method: "frappe.desk.form.linked_with.cancel_all_linked_docs",
+								args: {
+									docs: links,
+									ignore_doctypes_on_cancel_all: me.ignore_doctypes_on_cancel_all || []
+								},
+								freeze: true,
+								callback: (resp) => {
+									if (!resp.exc) {
+										me.reload_doc();
+										me._cancel(btn, callback, on_error, true);
+									}
+								}
+							});
 						}
-					}
-				});
+						}
+					})	 
+				})	
 			});
 		}
 
@@ -858,7 +886,41 @@ frappe.ui.form.Form = class FrappeForm {
 		if (skip_confirm) {
 			cancel_doc();
 		} else {
-			frappe.confirm(__("Permanently Cancel {0}?", [this.docname]), cancel_doc, me.handle_save_fail(btn, on_error));
+			var d=new frappe.ui.Dialog({
+				title:"Confirm",
+				  fields:[
+				  {"fieldname":"text", "fieldtype":"Small Text", "default":`Permanently Cancel ${this.docname}?`,"read_only":1},
+			   {"fieldname":"reason", "fieldtype":"Small Text","label":"Reason for Cancelling", "reqd":1},
+				],
+				primary_action_label:"Yes",
+				secondary_action_label:"No",
+				secondary_action(){
+					me.handle_save_fail(btn, on_error)
+					d.hide()
+				},
+				primary_action(data){
+					var cmt = frappe.model.get_new_doc("Comment")
+					cmt.comment_type="Comment";
+					cmt.reference_doctype = me.doctype;
+					cmt.reference_name = me.docname;
+					cmt.content = `<p>Reason for Cancel:</p>${data.reason}`;
+					frappe.call({
+						method:"frappe.client.save", 
+						args:{doc:cmt},
+						callback(){
+							cancel_doc()
+							d.hide()
+						}
+					}) 
+				}
+			  })
+			  d.show()
+			$(d.wrapper[0].querySelector("div[data-fieldname='text']")).find(".clearfix").hide()
+			$(d.wrapper[0].querySelector("div[data-fieldname='text']")).find(".like-disabled-input")[0].style.background="none" 
+			$(d.wrapper[0].querySelector("div[data-fieldname='text']")).find(".like-disabled-input")[0].style.padding=0
+			$(d.wrapper[0].querySelector("div[data-fieldname='text']")).find(".like-disabled-input")[0].style.color="black"
+			$(d.wrapper[0].querySelector("div[data-fieldname='text']")).find(".like-disabled-input")[0].style.fontSize="15px"
+			// frappe.confirm(__("Permanently Cancel {0}?", [this.docname]), cancel_doc, );
 		}
 	};
 

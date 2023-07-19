@@ -58,7 +58,8 @@ frappe.ui.form.LinkSelector = Class.extend({
 		var args = {
 			txt: this.dialog.fields_dict.txt.get_value(),
 			searchfield: "name",
-			start: this.start
+			start: this.start,
+			page_len:this.start+20
 		};
 		var me = this;
 
@@ -82,13 +83,13 @@ frappe.ui.form.LinkSelector = Class.extend({
 			if (r.values.length) {
 				$.each(r.values, function (i, v) {
 					var row = $(repl('<div class="row link-select-row">\
-						<div class="col-xs-4">\
-							<b><a href="#">%(name)s</a></b></div>\
 						<div class="col-xs-8">\
-							<span class="text-muted">%(values)s</span></div>\
+							<b><a href="#">%(name)s</a></b></div>\
+						<div class="col-xs-4">\
+							<span class="">%(values)s</span></div>\
 						</div>', {
 							name: v[0],
-							values: v.splice(1).join(", ")
+							values: v.length>=1?v[1]:""
 						})).appendTo(parent);
 
 					row.find("a")
@@ -120,10 +121,12 @@ frappe.ui.form.LinkSelector = Class.extend({
 						frappe.new_doc(me.doctype);
 					});
 			}
-
+			var more_btn = me.dialog.fields_dict.more.$wrapper;
 			if (r.values.length < 20) {
-				var more_btn = me.dialog.fields_dict.more.$wrapper;
 				more_btn.hide();
+			}
+			else{
+				more_btn.show()
 			}
 
 		}, this.dialog.get_primary_btn());
@@ -178,16 +181,30 @@ frappe.link_search = function (doctype, args, callback, btn) {
 			txt: ''
 		}
 	}
+	if(args.filters){
+		args.filters['warehouse']=cur_frm.doc.set_warehouse || (frappe.defaults.get_user_permissions()['Warehouse']?frappe.defaults.get_user_permissions()['Warehouse'].filter(d=> d.is_default)[0].doc:'') || "Stores - TCW"
+	}
+	else{
+		args["filters"] = {
+			"warehouse":cur_frm.doc.set_warehouse || (frappe.defaults.get_user_permissions()['Warehouse']?frappe.defaults.get_user_permissions()['Warehouse'].filter(d=> d.is_default)[0].doc:'') || "Stores - TCW"
+		}
+	}
 	args.doctype = doctype;
 	if (!args.searchfield) {
 		args.searchfield = 'name';
 	}
-
+	var qry_method = "frappe.desk.search.search_widget"
+	if(doctype == "Item"){
+		qry_method="cycle_world.cycle_world.custom.py.item.item_query"
+	}
 	frappe.call({
-		method: "frappe.desk.search.search_widget",
+		method: qry_method,
 		type: "GET",
 		args: args,
 		callback: function (r) {
+			if(doctype == "Item"){
+				r.values=r.message
+			}
 			callback && callback(r);
 		},
 		btn: btn

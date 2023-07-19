@@ -471,7 +471,9 @@ frappe.views.QueryReport = class QueryReport extends frappe.views.BaseList {
 
 		this.filters = filters.map(df => {
 			if (df.fieldtype === 'Break') return;
-
+			if(["project", "cost_center"].includes(df.fieldname)){
+				df.hidden=1
+			}
 			let f = this.page.add_field(df, filter_area);
 
 			if (df.default) {
@@ -1755,15 +1757,17 @@ frappe.views.QueryReport = class QueryReport extends frappe.views.BaseList {
 
 	show_footer_message() {
 		this.$report_footer && this.$report_footer.remove();
+		this.$tree_footer && this.$tree_footer.remove()
 		this.$report_footer = $(`<div class="report-footer text-muted"></div>`).appendTo(this.page.main);
 		if (this.tree_report) {
-			this.$tree_footer = $(`<div class="tree-footer col-md-6">
+			this.$tree_footer = $(`<div class="tree-footer col-md-6" style="margin-top: 5px;">
 				<button class="btn btn-xs btn-default" data-action="expand_all_rows">
 					${__('Expand All')}</button>
 				<button class="btn btn-xs btn-default" data-action="collapse_all_rows">
 					${__('Collapse All')}</button>
 			</div>`);
-			$(this.$report_footer).append(this.$tree_footer);
+			// $(this.$report_footer).append(this.$tree_footer);
+			this.$tree_footer.prependTo(this.page.main)
 			this.$tree_footer.find('[data-action=collapse_all_rows]').show();
 			this.$tree_footer.find('[data-action=expand_all_rows]').hide();
 		}
