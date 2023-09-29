@@ -15,7 +15,8 @@ frappe.ui.get_print_settings = function(
 		{
 			fieldtype: "Check",
 			fieldname: "with_letter_head",
-			label: __("With Letter head")
+			label: __("With Letter head"),
+			default:1
 		},
 		{
 			fieldtype: "Select",
@@ -59,21 +60,34 @@ frappe.ui.get_print_settings = function(
 		);
 	}
 
-	return frappe.prompt(
-		columns,
-		function(data) {
-			data = $.extend(print_settings, data);
-			if (!data.with_letter_head) {
-				data.letter_head = null;
-			}
-			if (data.letter_head) {
-				data.letter_head =
-					frappe.boot.letter_heads[print_settings.letter_head];
-			}
-			callback(data);
-		},
-		__("Print Settings")
-	);
+	var data = {}
+	data.letter_head = letter_head || default_letter_head
+	data.with_letter_head = 1
+	data.orientation = "Portrait"
+	data = $.extend(print_settings, data);
+	if (!data.with_letter_head) {
+		data.letter_head = null;
+	}
+	if (data.letter_head) {
+		data.letter_head =
+			frappe.boot.letter_heads[print_settings.letter_head];
+	}
+	callback(data);
+	// return frappe.prompt(
+	// 	columns,
+	// 	function(data) {
+	// 		data = $.extend(print_settings, data);
+	// 		if (!data.with_letter_head) {
+	// 			data.letter_head = null;
+	// 		}
+	// 		if (data.letter_head) {
+	// 			data.letter_head =
+	// 				frappe.boot.letter_heads[print_settings.letter_head];
+	// 		}
+	// 		callback(data);
+	// 	},
+	// 	__("Print Settings")
+	// );
 };
 
 // qz tray connection wrapper

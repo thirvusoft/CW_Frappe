@@ -890,7 +890,7 @@ class Document(BaseDocument):
 
 		raise frappe.MandatoryError(
 			"[{doctype}, {name}]: {fields}".format(
-				fields=", ".join((each[0] for each in missing)), doctype=self.doctype, name=self.name
+				fields=", ".join((str(each) for each in missing)), doctype=self.doctype, name=self.name
 			)
 		)
 

@@ -33,7 +33,7 @@
 				{% endif %}
 			>
 			{% if print_settings.letter_head %}
-			<div {% if print_settings.repeat_header_footer %} id="header-html" class="hidden-pdf" {% endif %}>
+			<div>
 				<div class="letter-head">{{ print_settings.letter_head.header }}</div>
 			</div>
 			{% endif %}

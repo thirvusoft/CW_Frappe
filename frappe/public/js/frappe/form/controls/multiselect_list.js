@@ -190,7 +190,19 @@ frappe.ui.form.ControlMultiSelectList = frappe.ui.form.ControlData.extend({
 			let value = this.df.get_data(txt);
 			if (!value) {
 				this._options = [];
-			} else if (value.then) {
+			} 
+			else if(this.df.ts_custom_multi_select && value[0].then){
+				promise = value[0].then(options => {
+					// this._options = process_options(options);
+					value[1].then((options1)=> {
+						// options.concat(options1)
+						var options3 = [...options, ...options1]
+						this._options = this._options.concat(process_options(options3));
+						return this._options
+					})
+				});
+			}
+			else if (value.then) {
 				promise = value.then(options => {
 					this._options = process_options(options);
 				});

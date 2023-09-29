@@ -1471,7 +1471,7 @@ frappe.views.QueryReport = class QueryReport extends frappe.views.BaseList {
 						this.report_doc.letter_head,
 						this.get_visible_columns()
 					);
-					this.add_portrait_warning(dialog);
+					// this.add_portrait_warning(dialog);
 				},
 				condition: () => frappe.model.can_print(this.report_doc.ref_doctype),
 				standard: true
@@ -1486,7 +1486,7 @@ frappe.views.QueryReport = class QueryReport extends frappe.views.BaseList {
 						this.get_visible_columns()
 					);
 
-					this.add_portrait_warning(dialog);
+					// this.add_portrait_warning(dialog);
 				},
 				condition: () => frappe.model.can_print(this.report_doc.ref_doctype),
 				standard: true

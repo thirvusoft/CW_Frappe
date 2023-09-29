@@ -208,6 +208,12 @@ $.extend(frappe.perm, {
 		// allow on submit
 		// let allow_on_submit = df.fieldtype==="Table" ? 0 : cint(df.allow_on_submit);
 		let allow_on_submit = cint(df.allow_on_submit);
+		if(doc.doctype == "Stock Reconciliation" || doc.parenttype == "Stock Reconciliation"){
+			allow_on_submit = cint(df.allow_on_submit) || frappe.user.has_role("HO Admin");
+		}
+		else if((doc.doctype == "Sales Invoice" || doc.parenttype == "Sales Invoice") && !cur_frm.doc.irn){
+			allow_on_submit = cint(df.allow_on_submit) || frappe.user.has_role("HO Admin");
+		}
 		if (status === "Read" && allow_on_submit && cint(doc.docstatus) === 1 && p.write) {
 			status = "Write";
 		}

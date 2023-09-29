@@ -90,15 +90,20 @@ def generate_report_result(
 
 	columns, result, message, chart, report_summary, skip_total_row = ljust_list(res, 6)
 	columns = [get_column_as_dict(col) for col in (columns or [])]
+	columns_to_show_in_custom_report = [i for i in columns if(i.get("show_in_custom_report"))]
 	report_column_names = [col["fieldname"] for col in columns]
-
 	# convert to list of dicts
 	result = normalize_result(result, columns)
 
 	if report.custom_columns:
 		# saved columns (with custom columns / with different column order)
 		columns = report.custom_columns
-
+		existing_columns = [i.get("fieldname") for i in columns if i.get("fieldname")]
+		new_custom_columns_to_add = [i.get("fieldname") for i in columns_to_show_in_custom_report if(i.get("fieldname") and i.get("fieldname") not in existing_columns)]
+		for i in columns_to_show_in_custom_report:
+			if(i.get("fieldname") in new_custom_columns_to_add):
+				i["hidden"] = 0
+				columns.append(i)
 	# unsaved custom_columns
 	if custom_columns:
 		for custom_column in custom_columns:
@@ -117,7 +122,6 @@ def generate_report_result(
 
 	if cint(report.add_total_row) and result and not skip_total_row:
 		result = add_total_row(result, columns, is_tree=is_tree, parent_field=parent_field)
-
 	return {
 		"result": result,
 		"columns": columns,
