@@ -54,13 +54,14 @@
  "idx": 1,
  "in_create": 1,
  "links": [],
- "modified": "2023-09-01 16:52:06.714483",
+ "modified": "2023-10-09 11:12:46.785418",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "Version",
  "owner": "Administrator",
  "permissions": [
   {
+   "delete": 1,
    "export": 1,
    "read": 1,
    "report": 1,
