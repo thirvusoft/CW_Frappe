@@ -864,7 +864,7 @@ class BaseDocument(object):
 
 				if self_value != db_value:
 					frappe.throw(
-						_("Not allowed to change {0} after submission").format(df.label),
+						_("Not allowed to change {0} after submission({1} != {2})").format(df.label, self_value, db_value),
 						frappe.UpdateAfterSubmitError,
 					)
 
