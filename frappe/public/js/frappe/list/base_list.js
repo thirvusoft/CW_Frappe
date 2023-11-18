@@ -760,7 +760,7 @@ class FilterArea {
 						}
 					}
 					let default_value =
-						fieldtype === "Link"
+						(fieldtype === "Link" && !df.ignore_user_permissions)
 							? frappe.defaults.get_user_default(options)
 							: null;
 					if (["__default", "__global"].includes(default_value)) {
